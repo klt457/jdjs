@@ -11,14 +11,14 @@ ShellDir=${JD_DIR:-$(cd $(dirname $0); pwd)}
 LogDir=${ShellDir}/log
 [ ! -d ${LogDir} ] && mkdir -p ${LogDir}
 ScriptsDir=${ShellDir}/scripts
-Scripts2Dir=${ShellDir}/scripts2
+#Scripts2Dir=${ShellDir}/scripts2
 ConfigDir=${ShellDir}/config
 FileConf=${ConfigDir}/config.sh
 FileDiy=${ConfigDir}/diy.sh
 FileConfSample=${ShellDir}/sample/config.sh.sample
 ListCron=${ConfigDir}/crontab.list
 ListCronLxk=${ScriptsDir}/docker/crontab_list.sh
-ListCronShylocks=${Scripts2Dir}/docker/crontab_list.sh
+#ListCronShylocks=${Scripts2Dir}/docker/crontab_list.sh
 ListTask=${LogDir}/task.list
 ListJs=${LogDir}/js.list
 ListJsAdd=${LogDir}/js-add.list
@@ -29,15 +29,15 @@ ContentDropTask=${ShellDir}/drop_task
 SendCount=${ShellDir}/send_count
 isTermux=${ANDROID_RUNTIME_ROOT}${ANDROID_ROOT}
 WhichDep=$(grep "/jd-base" "${ShellDir}/.git/config")
-Scripts2URL=https://github.com/shylocks/Loon
+#Scripts2URL=https://github.com/shylocks/Loon
 
-if [[ ${WhichDep} == *github* ]]; then
-  ScriptsURL=https://github.com/LXK9301/jd_scripts
-  ShellURL=https://github.com/EvineDeng/jd-base
-else
+##if [[ ${WhichDep} == *github* ]]; then
   ScriptsURL=https://gitee.com/lxk0301/jd_scripts
-  ShellURL=https://gitee.com/evine/jd-base
-fi
+  ShellURL=http://192.168.123.188:3000/klt457/jd-base
+##else
+  ##ScriptsURL=http://192.168.123.188:3000/klt457/jd_scripts
+  ##ShellURL=http://192.168.123.188:3000/klt457/githubjd-base
+##fi
 
 ## 更新shell脚本
 function Git_PullShell {
@@ -75,22 +75,22 @@ function Git_PullScripts {
 }
 
 ## 克隆scripts2
-function Git_CloneScripts2 {
-  echo -e "克隆shylocks脚本，原地址：${Scripts2URL}\n"
-  git clone -b main ${Scripts2URL} ${Scripts2Dir}
-  ExitStatusScripts2=$?
-  echo
-}
+#function Git_CloneScripts2 {
+  #echo -e "克隆shylocks脚本，原地址：${Scripts2URL}\n"
+  #git clone -b main ${Scripts2URL} ${Scripts2Dir}
+  #ExitStatusScripts2=$?
+  #echo
+#}
 
 ## 更新scripts2
-function Git_PullScripts2 {
-  echo -e "更新shylocks脚本，原地址：${Scripts2URL}\n"
-  cd ${Scripts2Dir}
-  git fetch --all
-  ExitStatusScripts2=$?
-  git reset --hard origin/main
-  echo
-}
+#function Git_PullScripts2 {
+  #echo -e "更新shylocks脚本，原地址：${Scripts2URL}\n"
+  #cd ${Scripts2Dir}
+  #git fetch --all
+  #ExitStatusScripts2=$?
+  #git reset --hard origin/main
+  #echo
+#}
 
 ## 用户数量UserSum
 function Count_UserSum {
@@ -116,9 +116,9 @@ function Change_JoyRunPins {
     PinTempFormat=$(printf ${PinTemp})
     PinALL="${PinTempFormat},${PinALL}"
     let j--
-  done
-  PinEvine="Evine,做一颗潇洒的蛋蛋,Evine007,jd_7bb2be8dbd65c,jd_6fae2af082798,jd_664ecc3b78945,277548856_m,米大眼老鼠,"
-  PinALL="${PinALL}${PinEvine}"
+  #done
+  #PinEvine="老鼠,"
+  #PinALL="${PinALL}${PinEvine}"
   perl -i -pe "{s|(let invite_pins = \[\")(.+\"\];?)|\1${PinALL}\2|; s|(let run_pins = \[\")(.+\"\];?)|\1${PinALL}\2|}" ${ScriptsDir}/jd_joy_run.js
 }
 
@@ -177,7 +177,7 @@ function Notify_Version {
   if [ -f ${FileConf} ] && [[ "${VerConf}" != "${VerConfSample}" ]] && [[ ${UpdateDate} == $(date "+%Y-%m-%d") ]]
   then
     if [ ! -f ${SendCount} ]; then
-      echo -e "检测到配置文件config.sh.sample有更新\n\n更新日期: ${UpdateDate}\n当前版本: ${VerConf}\n新的版本: ${VerConfSample}\n更新内容: ${UpdateContent}\n\n如需使用新功能按该文件前几行注释操作，否则请无视本消息。\n" | tee ${ContentVersion}
+      echo -e "检测到配置文件config.sh.sample有更新\n\n更新日期: ${UpdateDate}\n当前版本: ${VerConf}\n新的版本: ${VerConfSample}\n更新内容: ${UpdateContent}\n如需使用新功能请对照config.sh.sample，将相关新参数手动增加到你自己的config.sh中，否则请无视本消息。\n" | tee ${ContentVersion}
       echo -e "本消息只在该新版本配置文件更新当天发送一次，脚本地址：${ShellURL}" >> ${ContentVersion}
       cd ${ShellDir}
       node update.js
@@ -352,8 +352,8 @@ if [ ${ExitStatusShell} -eq 0 ]; then
   echo -e "--------------------------------------------------------------\n"
   [ -f ${ScriptsDir}/package.json ] && PackageListOld=$(cat ${ScriptsDir}/package.json)
   [ -d ${ScriptsDir}/.git ] && Git_PullScripts || Git_CloneScripts
-  [ -d ${Scripts2Dir}/.git ] && Git_PullScripts2 || Git_CloneScripts2
-  cp -f ${Scripts2Dir}/jd_*.js ${ScriptsDir}
+  #[ -d ${Scripts2Dir}/.git ] && Git_PullScripts2 || Git_CloneScripts2
+  #cp -f ${Scripts2Dir}/jd_*.js ${ScriptsDir}
 fi
 
 ## 执行各函数
