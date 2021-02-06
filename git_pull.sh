@@ -360,7 +360,7 @@ fi
 if [[ ${ExitStatusScripts} -eq 0 ]]
 then
   echo -e "js脚本更新完成...\n"
-  Change_ALL
+  #Change_ALL
   [ -d ${ScriptsDir}/node_modules ] && Notify_Version
   Diff_Cron
   Npm_Install
@@ -370,7 +370,7 @@ then
   Add_Cron
 else
   echo -e "js脚本更新失败，请检查原因或再次运行git_pull.sh...\n"
-  Change_ALL
+  #Change_ALL
 fi
 
 ## 调用用户自定义的diy.sh
