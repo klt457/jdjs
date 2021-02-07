@@ -1,6 +1,6 @@
 FROM node:lts-alpine
 LABEL maintainer="klt"
-ARG JD_BASE_URL=http://bt4.akili.top:10080/klt457/jd-base
+ARG JD_BASE_URL=https://github.com/klt457/jdjs
 ARG JD_BASE_BRANCH=v3
 ARG JD_SCRIPTS_URL=https://gitee.com/lxk0301/jd_scripts
 ARG JD_SCRIPTS_BRANCH=master
